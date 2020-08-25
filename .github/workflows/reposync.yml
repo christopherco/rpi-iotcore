@@ -3,12 +3,8 @@
 name: Sync Fork Branch with Upstream
 
 on:
-  workflow_dispatch:
-    inputs:
-      branchname:
-        description: 'Branch to sync'
-        default: 'master'
-        required: false
+  schedule:
+  - cron: "0 15 * * *"
 
 jobs:
   sync:
@@ -18,11 +14,11 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2.3.2
       with:
-        ref: ${{ github.event.inputs.branchname }}
+        ref: master
     - name: Sync
       run: |
-        git checkout ${{ github.event.inputs.branchname }}
+        git checkout master
         git remote add upstream https://github.com/ms-iot/rpi-iotcore.git
         git fetch upstream
-        git pull upstream ${{ github.event.inputs.branchname }}
-        git push origin ${{ github.event.inputs.branchname }}        
+        git pull upstream master
+        git push origin master
